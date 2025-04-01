@@ -138,3 +138,23 @@ double Error::entropy(vector<double> data){
 
     return ((-1) * res);
 }
+
+
+double Error::entropy(uchar* data, int n, int channel){
+    std::vector<double> table(255, 0);
+    double prob;
+    double res;
+
+    for (int i = 0; i < n*3; i+=3){
+        double val = static_cast<double>(data[i + channel]);
+        table[val] += 1;
+    }
+
+    for (int i = 0; i < n*3; i+=3){
+        double val = static_cast<double>(data[i + channel]);
+        prob = table[val] / n;
+        res += prob * log2(prob);
+    }
+
+    return ((-1) * res);
+}

@@ -23,6 +23,7 @@ class Error{
         static double MPD(vector<double> data);
         static double MPD(uchar* data, int n, int channel);
         static double entropy(vector<double> data);
+        static double entropy(uchar* data, int n, int channel);
 
 
 };
