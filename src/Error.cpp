@@ -102,6 +102,25 @@ double Error::MPD(vector<double> data){
     return (max - min);
 }
 
+double Error::MPD(uchar* data, int n, int channel){
+    double max = data[0];
+    double min = data[0];
+
+    for (int i = 0; i < n * 3; i+=3){
+        double val = static_cast<double>(data[i + channel]);
+
+        if (data[i] > max){
+            max = data[i];
+        }
+
+        if (data[i] < min){
+            min = data[i];
+        }
+    }
+
+    return (max - min);
+}
+
 double Error::entropy(vector<double> data){
     std::vector<double> table(255, 0);
     double prob;
