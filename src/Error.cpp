@@ -52,7 +52,7 @@ double Error::variance(uchar* data, int n, int channel){
     double res = 0;
 
     double avg = average(data, n, channel);
-    for(int i = 0; i < n * 3; i++){
+    for(int i = 0; i < n * 3; i+=3){
         double val = static_cast<double>(data[i + channel]);
         res += pow((val - avg), 2);
     }
@@ -68,6 +68,18 @@ double Error::MAD(vector<double> data){
 
     for (int i = 0; i < n; i++){
         res += fabs((data[i] - avg));
+    }
+
+    return res / n;
+}
+
+double Error::MAD(uchar* data, int n, int channel){
+    double avg = average(data, n, channel);
+    double res = 0;
+
+    for (int i = 0; i < n*3; i+=3){
+        double val = static_cast<double>(data[i + channel]);
+        res += fabs((val - avg));
     }
 
     return res / n;

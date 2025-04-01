@@ -19,6 +19,7 @@ class Error{
         static double variance(uchar* data, int n, int channel);
 
         static double MAD(vector<double> data);
+        static double MAD(uchar* data, int n, int channel);
         static double MPD(vector<double> data);
         static double entropy(vector<double> data);
 
