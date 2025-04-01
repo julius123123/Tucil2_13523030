@@ -12,6 +12,18 @@ double Error::average(vector<double> data){
     return res/n;
 }
 
+
+double Error::average(uchar* data, int n, int channel){
+    double res = 0;
+
+    for (int i = 0; i < n * 3; i+=3){
+        double value = static_cast<double>(data[i + channel]); 
+        res += value;
+    }
+    return (res/n);
+}
+
+
 double Error::sigma(vector<double> data){
     int n = data.size();
     double res = 0;

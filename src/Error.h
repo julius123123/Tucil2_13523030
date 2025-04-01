@@ -6,19 +6,19 @@
 using namespace std;
 
 class Error{
-    protected:
-        double* data;
     public:
         Error();
         Error(Error&);
         ~Error();
 
-        double average(vector<double> data);
-        double sigma(vector<double> data);
-        double variance(vector<double> data);
-        double MAD(vector<double> data);
-        double MPD(vector<double> data);
-        double entropy(vector<double> data);
+        static double average(vector<double> data);
+        static double average(uchar* data, int n, int channel);
+
+        static double sigma(vector<double> data);
+        static double variance(vector<double> data);
+        static double MAD(vector<double> data);
+        static double MPD(vector<double> data);
+        static double entropy(vector<double> data);
 
 
 };
