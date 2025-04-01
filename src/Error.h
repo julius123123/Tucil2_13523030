@@ -16,6 +16,8 @@ class Error{
 
         static double sigma(vector<double> data);
         static double variance(vector<double> data);
+        static double variance(uchar* data, int n, int channel);
+
         static double MAD(vector<double> data);
         static double MPD(vector<double> data);
         static double entropy(vector<double> data);

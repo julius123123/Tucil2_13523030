@@ -47,6 +47,20 @@ double Error::variance(vector<double> data){
     return res / n;
 }
 
+
+double Error::variance(uchar* data, int n, int channel){
+    double res = 0;
+
+    double avg = average(data, n, channel);
+    for(int i = 0; i < n * 3; i++){
+        double val = static_cast<double>(data[i + channel]);
+        res += pow((val - avg), 2);
+    }
+
+    return res / n;
+}
+
+
 double Error::MAD(vector<double> data){
     int n = data.size();
     double avg = average(data);
