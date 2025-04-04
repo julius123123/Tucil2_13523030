@@ -28,7 +28,6 @@ void QuadNode::operator=(QuadNode& other){
 }
 
 void QuadNode::split(){
-    std::cout<<"split"<<std::endl;
     int row_mid = row0 +  (row1 - row0)/2;
     int col_mid = col0 + (col1-col0) / 2;
     

@@ -13,7 +13,6 @@ QuadTree::~QuadTree(){
 }
 
 void QuadTree::BuildTree(QuadNode* node){
-    std::cout<<"BT"<<std::endl;
     double varB = Error::variance(node->image, cols, 0, node->row0, node->col0, node->row1, node->col1);
     double varG = Error::variance(node->image, cols, 1, node->row0, node->col0, node->row1, node->col1);
     double varR = Error::variance(node->image, cols, 2, node->row0, node->col0, node->row1, node->col1);
@@ -27,7 +26,6 @@ void QuadTree::BuildTree(QuadNode* node){
             valid = true;
             node->split();
             for (int i = 0; i < 4; i++){
-                std::cout<<i<<" row: "<<node->child[i]->row0<<std::endl;
                 BuildTree(node->child[i]);
             }
         }
