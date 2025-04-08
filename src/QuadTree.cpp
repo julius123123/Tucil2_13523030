@@ -8,6 +8,7 @@ QuadTree::QuadTree(int row0, int row1, int col0, int col1, uchar* image, int row
     this->min_block = min;
     this->error_thres = error;
     this->error_calc = e;
+    this->ori = image;
 }
 
 QuadTree::~QuadTree(){
@@ -73,4 +74,35 @@ void QuadTree::BuildTree(QuadNode* node){
             }
         }
     }
+}
+
+
+
+void QuadTree::CreateGif(int depth_target, uchar* gif, QuadNode* node){
+    bool isLeaf = true;
+    if (node->depth < depth_target){
+        if (node->child[0] != nullptr){
+            isLeaf = false;
+            CreateGif(depth_target, gif, node->child[0]);
+            CreateGif(depth_target, gif, node->child[1]);
+            CreateGif(depth_target, gif, node->child[2]);
+            CreateGif(depth_target, gif, node->child[3]);
+        }
+    }
+
+    if (isLeaf){
+        double avgB = Error::average(ori, cols, 0, node->row0, node->col0, node->row1, node->col1);
+        double avgG = Error::average(ori, cols, 1, node->row0, node->col0, node->row1, node->col1);
+        double avgR = Error::average(ori, cols, 2, node->row0, node->col0, node->row1, node->col1);
+        int idx;
+        
+        for (int i = node->row0; i < node->row1; i++){
+            for (int j = node->col0; j <= node->col1; j++){
+                idx = (i * cols + j) * 3;
+                gif[idx+0] = avgB;
+                gif[idx+1] = avgG;
+                gif[idx+2] = avgR;
+            }
+        }
+    }       
 }
