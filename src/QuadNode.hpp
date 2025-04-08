@@ -8,10 +8,10 @@ public:
     int row1;
     int col0;
     int col1;
-    uchar* image;
+    int depth;
     QuadNode* child[4];
 
-    QuadNode(int row0, int row1, int col0, int col1, uchar* image);
+    QuadNode(int row0, int row1, int col0, int col1, int depth);
     QuadNode(QuadNode&);
     ~QuadNode();
     void operator=(QuadNode&);
