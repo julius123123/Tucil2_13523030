@@ -67,6 +67,18 @@ int main(){
     cout<<"Banyak simpul: "<<tree.leaf<<"\n";
     
     cout<<on<<endl;
-    
+    for (int i = 0; i <= tree.depth;i++){
+        cout<<"depth: "<<i<<"\n";
+        uchar* gif = new unsigned char[tree.rows * tree.cols * 3];
+        tree.CreateGif(i, gif, tree.root);
+        cv::Mat image_gif(tree.rows, tree.cols, CV_8UC3);
+        string gif_name = std::to_string(i);
+        string ekstensi = ".jpg";
+        gif_name += ekstensi;
+        image_gif.data = gif; 
+        cv::imwrite(gif_name, image_gif);
+        delete gif;
+    }
+    cout<<"Tree depth: "<<tree.depth<<endl;
     return 0;
 }
