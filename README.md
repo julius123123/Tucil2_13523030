@@ -25,7 +25,8 @@ g++ -std=c++17 -O2 -o QuadTreeWindows.exe ^
     -lopencv_core -lopencv_imgcodecs -lopencv_highgui ^
     -lboost_filesystem -lboost_system
 ```
-
+##  Menjalankan Linux
+Jalankan file main pada bin
 #Cara Menjalankan
 Jalankan kode hasil kompilasi. Program akan meminta input
 1. Nama file gambar (path absolut)
