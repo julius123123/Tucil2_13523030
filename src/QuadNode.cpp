@@ -30,11 +30,11 @@ void QuadNode::operator=(QuadNode& other){
 void QuadNode::split(){
     int row_mid = row0 +  (row1 - row0)/2;
     int col_mid = col0 + (col1-col0) / 2;
-    
-    child[0] = new QuadNode(row0, row_mid, col0, col_mid, depth++);
-    child[1] = new QuadNode(row0, row_mid, col_mid, col1, depth++);
-    child[2] = new QuadNode(row_mid, row1, col0, col_mid, depth++);
-    child[3] = new QuadNode(row_mid, row1, col_mid, col1, depth++);
+    int child_depth = depth + 1;
+    child[0] = new QuadNode(row0, row_mid, col0, col_mid, child_depth);
+    child[1] = new QuadNode(row0, row_mid, col_mid, col1, child_depth);
+    child[2] = new QuadNode(row_mid, row1, col0, col_mid, child_depth);
+    child[3] = new QuadNode(row_mid, row1, col_mid, col1, child_depth);
 
 }
 
