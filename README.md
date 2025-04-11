@@ -11,10 +11,12 @@ Program ini dibuat menggunakan bahasa **C++** dan membutuhkan beberapa dependens
 - C++17
 
 ##  Kompilasi Linux
+Pindah direktori ke src
 ```bash
  g++ -o main main3.cpp Error.cpp QuadTree.cpp QuadNode.cpp
 ```
 ##  Kompilasi Windows
+Pindah direktori ke src
 ```bash
 g++ -o main_windows main3.cpp QuadNode.cpp QuadTree.cpp Error.cpp
 ```
