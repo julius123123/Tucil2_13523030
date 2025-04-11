@@ -13,7 +13,7 @@ double Error::average(vector<double> data){
 }
 
 
-double Error::average(uchar* data, int n, int channel){
+double Error::average(unsigned char* data, int n, int channel){
     double res = 0;
 
     for (int i = 0; i < n * 3; i+=3){
@@ -23,7 +23,7 @@ double Error::average(uchar* data, int n, int channel){
     return (res/n);
 }
 
-double Error::average(uchar* data, int i_col, int channel, int row0, int col0, int row1, int col1){
+double Error::average(unsigned char* data, int i_col, int channel, int row0, int col0, int row1, int col1){
     long double res = 0;
     int idx;
     double value;
@@ -68,7 +68,7 @@ double Error::variance(vector<double> data){
 }
 
 
-double Error::variance(uchar* data, int n, int channel){
+double Error::variance(unsigned char* data, int n, int channel){
     double res = 0;
 
     double avg = average(data, n, channel);
@@ -80,7 +80,7 @@ double Error::variance(uchar* data, int n, int channel){
     return res / n;
 }
 
-double Error::variance(uchar* data, int i_col, int channel, int row0, int col0, int row1, int col1){
+double Error::variance(unsigned char* data, int i_col, int channel, int row0, int col0, int row1, int col1){
     double res = 0;
     double val;
     double avg = average(data, i_col, channel, row0, col0, row1, col1);
@@ -111,7 +111,7 @@ double Error::MAD(vector<double> data){
     return res / n;
 }
 
-double Error::MAD(uchar* data, int n, int channel){
+double Error::MAD(unsigned char* data, int n, int channel){
     double avg = average(data, n, channel);
     double res = 0;
 
@@ -123,7 +123,7 @@ double Error::MAD(uchar* data, int n, int channel){
     return res / n;
 }
 
-double Error::MAD(uchar* data, int i_col, int channel, int row0, int col0, int row1, int col1){
+double Error::MAD(unsigned char* data, int i_col, int channel, int row0, int col0, int row1, int col1){
     double avg = average(data, i_col, channel, row0, col0, row1, col1);
     double res = 0;
     int n = 0;
@@ -156,7 +156,7 @@ double Error::MPD(vector<double> data){
     return (max - min);
 }
 
-double Error::MPD(uchar* data, int i_col, int channel, int row0, int col0, int row1, int col1){
+double Error::MPD(unsigned char* data, int i_col, int channel, int row0, int col0, int row1, int col1){
     double max = data[0];
     double min = data[0];
     int n =0;
@@ -183,7 +183,7 @@ double Error::MPD(uchar* data, int i_col, int channel, int row0, int col0, int r
 double Error::entropy(vector<double> data){
     std::vector<double> table(255, 0);
     double prob;
-    double res;
+    double res = 0;
 
     int n = data.size();
     for (int i = 0; i < n; i++){
@@ -199,7 +199,7 @@ double Error::entropy(vector<double> data){
 }
 
 
-double Error::entropy(uchar* data, int n, int channel){
+double Error::entropy(unsigned char* data, int n, int channel){
     std::vector<double> table(255, 0);
     double prob;
     double res;
@@ -218,7 +218,7 @@ double Error::entropy(uchar* data, int n, int channel){
     return ((-1) * res);
 }
 
-double Error::entropy(uchar* data, int i_col, int channel, int row0, int col0, int row1, int col1){
+double Error::entropy(unsigned char* data, int i_col, int channel, int row0, int col0, int row1, int col1){
     std::vector<double> table(256, 0);
     double prob;
     double res = 0;
