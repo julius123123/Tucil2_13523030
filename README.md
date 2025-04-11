@@ -22,7 +22,7 @@ g++ -o main_windows main3.cpp QuadNode.cpp QuadTree.cpp Error.cpp
 ```
 ##  Menjalankan Linux
 Jalankan file main pada bin
-#Cara Menjalankan
+Cara Menjalankan
 Jalankan kode hasil kompilasi. Program akan meminta input
 1. Nama file gambar (path absolut)
 2. Metode perhitungan error (1 - 4)
