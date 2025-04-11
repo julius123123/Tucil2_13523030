@@ -1,21 +1,25 @@
+#define STB_IMAGE_IMPLEMENTATION
 #define GIF_STATIC
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
 #include "QuadNode.hpp"
 #include "QuadTree.hpp"
-#include <opencv4/opencv2/opencv.hpp>
 #include <iostream>
 #include <fstream>
-#include <boost/filesystem.hpp>
-#include <sys/stat.h>
+// #include <boost/filesystem.hpp>
+#include <filesystem>
+#include "stb_image.h"
+// #include <sys/stat.h>
 #include "lib/gif.h"
 using namespace std;
+#include <cstdint>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 long GetFileSize(std::string filename)
 {
-    struct stat stat_buf;
-    int rc = stat(filename.c_str(), &stat_buf);
-    return rc == 0 ? stat_buf.st_size : -1;
+    return static_cast<long>(fs::file_size(filename));
+
 }
 
 bool  isFileValid(string& name){
@@ -88,35 +92,28 @@ int validasi_method(){
 }
 
 
-void make_gif(QuadTree& tree, const std::string& gif_output, int width, int height) {
+void make_gif(QuadTree& tree, const std::string& gif_output) {
     GifWriter writer;
-    if (!GifBegin(&writer, gif_output.c_str(), width, height, 10)) {
-        std::cerr << "Gagal membuat GIF: " << gif_output << std::endl;
-        return;
-    }
+    // if (!GifBegin(&writer, gif_output.c_str(), tree.cols, tree.rows, 10)) {
+    //     std::cerr << "Gagal membuat GIF: " << gif_output << std::endl;
+    //     return;
+    // }
 
-    for (int i = 0; i <= tree.depth; ++i) {
+    GifBegin(&writer, gif_output.c_str(), tree.cols, tree.rows, 100, 8, false);
+    for (int i = 0; i < tree.depth; ++i) {
         // Buat buffer mentah dari QuadTree
-        uchar* raw_bgr = new uchar[tree.rows * tree.cols * 3];
-        tree.CreateGif(i, raw_bgr, tree.root);
-
-        // Buat cv::Mat dari buffer (jangan lupa clone agar tidak ubah data asli)
-        cv::Mat bgr_img(tree.rows, tree.cols, CV_8UC3, raw_bgr);
-        cv::Mat rgb_img;
-        cv::cvtColor(bgr_img, rgb_img, cv::COLOR_BGR2RGB);
-
-        // Pastikan buffer datanya continuous dan pointer aman
-        if (!rgb_img.isContinuous()) {
-            rgb_img = rgb_img.clone();
-        }
-        cv::Mat test_img(height, width, CV_8UC3, bgr_img.data);
-        cv::imwrite("check_frame_" + std::to_string(i) + ".png", test_img);
+        unsigned char* raw_rgb = new unsigned char[tree.cols * tree.rows * 3];
+        tree.CreateGif(i, raw_rgb, tree.root);
 
         // Simpan frame ke GIF
-        GifWriteFrame(&writer, rgb_img.data, width, height, (i == tree.depth) ? 100 : 10);
+        // stbi_write_jpg("frame", tree.cols, tree.rows, 3, raw_rgb, tree.cols * 3);
+        GifWriteFrame(&writer, raw_rgb, tree.cols, tree.rows,100, 8, false);
 
-        delete[] raw_bgr;
+        delete[] raw_rgb;
+        // std::cout<<"W="<<tree.cols<<", H="<<tree.rows<<", depth="<<tree.depth<<std::endl;
+
     }
+
 
     GifEnd(&writer);
 }
@@ -170,25 +167,37 @@ int main(){
     cout<<endl;
     
     // Buat gambar
-    cv::Mat image;
-    image = cv::imread(fn);
+    
+    // cv::Mat image;
+    // image = cv::imread(fn);
+
+    int width, height, channels;
+    unsigned char* p = stbi_load(fn.c_str(), &width, &height, &channels, 3);
+
+    if (!p) {
+        std::cerr << "Gagal memuat gambar: " << fn << std::endl;
+        return 1;
+    }
+
     // Pointer rgb
-    uchar* p = image.ptr<uchar>(0);
+    // uchar* p = image.ptr<uchar>(0);
     auto t1 = chrono::high_resolution_clock::now();//waktu
 
     // Buat quadtree dari awal
-    QuadTree tree = QuadTree(0, image.rows, 0, image.cols, p, image.rows, image.cols, min, error_thres, error_cal);
+    QuadTree tree = QuadTree(0, height, 0, width, p, height, width, min, error_thres, error_cal);
     tree.BuildTree(tree.root);
 
     //Simpan hasil kompresi
-    cv::Mat image2(image.rows, image.cols, CV_8UC3);
-    memcpy(image2.data, tree.image, image.rows * image.cols * 3);
-    cv::imwrite(on, image2);
+    // cv::Mat image2(image.rows, image.cols, CV_8UC3);
+    // memcpy(image2.data, tree.image, image.rows * image.cols * 3);
+    // cv::imwrite(on, image2);
+
+    stbi_write_jpg(on.c_str(), width, height, 3, tree.image, width * 3);
     //Simpan gambar tiap kedalaman;
     // make_gif(tree, gif_path);
     
     // make_gif(tree, gif_output, image2.cols, image2.rows);
-
+    make_gif(tree, gif_output);
     // Hitung persentase kompresi
     size1 = static_cast<double>(GetFileSize(fn));
     size2 = static_cast<double>(GetFileSize(on));

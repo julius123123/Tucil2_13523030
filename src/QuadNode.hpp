@@ -1,6 +1,6 @@
 #ifndef QUAD_NODE_HPP
 #define QUAD_NODE_HPP
-#include <opencv2/opencv.hpp>
+// #include <opencv2/opencv.hpp>
 
 class QuadNode{
 public:
