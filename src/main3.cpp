@@ -6,13 +6,10 @@
 #include "QuadTree.hpp"
 #include <iostream>
 #include <fstream>
-// #include <boost/filesystem.hpp>
 #include <filesystem>
 #include "stb_image.h"
-// #include <sys/stat.h>
 #include "lib/gif.h"
 using namespace std;
-#include <cstdint>
 
 namespace fs = std::filesystem;
 
@@ -94,23 +91,15 @@ int validasi_method(){
 
 void make_gif(QuadTree& tree, const std::string& gif_output) {
     GifWriter writer;
-    // if (!GifBegin(&writer, gif_output.c_str(), tree.cols, tree.rows, 10)) {
-    //     std::cerr << "Gagal membuat GIF: " << gif_output << std::endl;
-    //     return;
-    // }
 
     GifBegin(&writer, gif_output.c_str(), tree.cols, tree.rows, 100, 8, false);
     for (int i = 0; i < tree.depth; ++i) {
-        // Buat buffer mentah dari QuadTree
         unsigned char* raw_rgb = new unsigned char[tree.cols * tree.rows * 3];
         tree.CreateGif(i, raw_rgb, tree.root);
 
-        // Simpan frame ke GIF
-        // stbi_write_jpg("frame", tree.cols, tree.rows, 3, raw_rgb, tree.cols * 3);
         GifWriteFrame(&writer, raw_rgb, tree.cols, tree.rows,100, 8, false);
 
         delete[] raw_rgb;
-        // std::cout<<"W="<<tree.cols<<", H="<<tree.rows<<", depth="<<tree.depth<<std::endl;
 
     }
 
@@ -166,11 +155,7 @@ int main(){
     cin>>gif_output;
     cout<<endl;
     
-    // Buat gambar
-    
-    // cv::Mat image;
-    // image = cv::imread(fn);
-
+    // Load gambar
     int width, height, channels;
     unsigned char* p = stbi_load(fn.c_str(), &width, &height, &channels, 3);
 
@@ -179,25 +164,19 @@ int main(){
         return 1;
     }
 
-    // Pointer rgb
-    // uchar* p = image.ptr<uchar>(0);
+    
     auto t1 = chrono::high_resolution_clock::now();//waktu
 
     // Buat quadtree dari awal
     QuadTree tree = QuadTree(0, height, 0, width, p, height, width, min, error_thres, error_cal);
     tree.BuildTree(tree.root);
 
-    //Simpan hasil kompresi
-    // cv::Mat image2(image.rows, image.cols, CV_8UC3);
-    // memcpy(image2.data, tree.image, image.rows * image.cols * 3);
-    // cv::imwrite(on, image2);
-
+    // Simpan gambar
     stbi_write_jpg(on.c_str(), width, height, 3, tree.image, width * 3);
+   
     //Simpan gambar tiap kedalaman;
-    // make_gif(tree, gif_path);
-    
-    // make_gif(tree, gif_output, image2.cols, image2.rows);
     make_gif(tree, gif_output);
+    
     // Hitung persentase kompresi
     size1 = static_cast<double>(GetFileSize(fn));
     size2 = static_cast<double>(GetFileSize(on));
