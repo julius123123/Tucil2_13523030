@@ -2,17 +2,20 @@
 
 QuadTree::QuadTree(int row0, int row1, int col0, int col1, uchar* image, int rows, int cols, int min, double error, int e){
     root = new QuadNode(row0, row1, col0, col1, 0);
-    this->image = image;
+    this->image = new uchar[rows * cols * 3];
+    memcpy(this->image, image, rows * cols * 3);
     this->rows = rows;
     this->cols = cols;
     this->min_block = min;
     this->error_thres = error;
     this->error_calc = e;
-    this->ori = image;
+    this->ori = new uchar[rows * cols *3];
+    memcpy(this->ori, image, rows*cols * 3);
 }
 
 QuadTree::~QuadTree(){
-    delete root;
+    delete[] image;
+    delete[] ori;
 }
 
 void QuadTree::BuildTree(QuadNode* node){
