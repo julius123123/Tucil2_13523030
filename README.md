@@ -6,7 +6,7 @@ Program ini merupakan cara mengompresi gambar menggunakan pendekatan Divide and 
 
 ##  Requirements
 
-Program ini dibuat menggunakan bahasa **C++** dan membutuhkan beberapa dependensi:
+Program ini dibuat menggunakan bahasa **C++** dan membutuhkan dependensi:
 
 - C++17
 
